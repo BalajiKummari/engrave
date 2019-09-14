@@ -1,0 +1,161 @@
+<html>
+<body>
+    <div>
+        <h3>To Submit Review : </h3>
+        Hotel_id : <input type="text" id="Hotel_id" size="15" ><br><br>
+        Write Review: <input type="text" id="Review" size="50" ><br><br>
+        <button id="SubmtReview">Submt Review</button>
+
+        <h3>To Read a Review : </h3>
+        <input type="text" id="rHotel_id" size="15" >
+        <button id="RReview">Show Reviews</button> <br>
+
+        
+        <p style="float: left;" id="showReview">Review will be displayed here</p> 
+
+
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/gh/ethereum/web3.js@1.0.0-beta.36/dist/web3.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" crossorigin="anonymous"></script>
+
+    <script>
+        var contract;
+        $(document).ready(function()
+        {
+            web3 = new Web3(web3.currentProvider);  
+            var address ="0x4A529A6EC2C22185A8946dAA4E0c59D5D4e52aeE";
+
+            var abi =[
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "id",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "_review",
+				"type": "string"
+			}
+		],
+		"name": "addReview",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "hotels",
+		"outputs": [
+			{
+				"internalType": "int256",
+				"name": "oyoid",
+				"type": "int256"
+			},
+			{
+				"internalType": "string",
+				"name": "review",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "hotelscount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "int256",
+				"name": "id",
+				"type": "int256"
+			}
+		],
+		"name": "returnReview",
+		"outputs": [
+			{
+				"internalType": "string",
+				"name": "",
+				"type": "string"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+]  ;
+            window.ethereum.enable();
+            contract = new web3.eth.Contract(abi, address);
+            console.log("eth linked")
+
+
+
+        })
+
+        $('#SubmtReview').click(function()
+                {   
+                    
+                    var id = 0;
+                    var  review ;
+                    id = parseInt($('#Hotel_id').val());
+                    review = $('#Review').val()
+
+
+                    web3.eth.getAccounts().then(function(accounts)
+                    {
+                        var acc =accounts[0];
+                        console.log( accounts)
+                        return contract.methods.addReview(id,review).send({from: acc});
+
+                    }).then(function(tx)
+                    {
+                        console.log(tx);
+
+                    }).catch(function(tx)
+                    {
+                        console.log(tx);
+                    })
+                })
+
+
+        $('#RReview').click(function()
+                
+                {   
+                    var id = 0;
+                    id = parseInt($('#rHotel_id').val());
+                    contract.methods.returnReview(id).call().then(function(rev)
+                    {
+                        $('#showReview').html(rev);
+
+                    })
+                })   
+    
+    </script>
+</body>
+</html>
