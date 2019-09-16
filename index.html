@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<style>
+
+    
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial;
+}
+
+.header {
+  text-align: center;
+  padding: 32px;
+}
+
+.row {
+  display: -ms-flexbox; /* IE10 */
+  display: flex;
+  -ms-flex-wrap: wrap; /* IE10 */
+  flex-wrap: wrap;
+  padding: 0 4px;
+}
+
+/* Create four equal columns that sits next to each other */
+.column {
+  -ms-flex: 25%; /* IE10 */
+  flex: 25%;
+  max-width: 25%;
+  padding: 0 4px;
+}
+
+.column img {
+  margin-top: 8px;
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* Responsive layout - makes a two column-layout instead of four columns */
+@media screen and (max-width: 800px) {
+  .column {
+    -ms-flex: 50%;
+    flex: 50%;
+    max-width: 50%;
+  }
+}
+
+/* Responsive layout - makes the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 600px) {
+  .column {
+    -ms-flex: 100%;
+    flex: 100%;
+    max-width: 100%;
+  }
+}
+h1 {
+  background-color: #80ced6;
+}
+</style>
+<body  >
+
+<!-- Header -->
+<div class="header">
+    <img src="logo.png" alt="logo">
+  <p>Reviews That are carved on digital Stone........</p>
+
+  
+  <h5>This is a Blockchain based Review System  </h5>
+  <h5>once a Review is submitted...No person, No Company can tamper it </h5>
+  <center>
+    <h4 style="color:red "><b>For Customers :</b> Finally!!! Here are the Reviews that you can trust </h4>
+   <h4 style="color:red " ><b>For Companies :</b> Integrate our Review Sytem and gain the trust of Millions</h4></center><br>
+
+   <H3>Select a Company That you want to Read/ write a Review </H3>
+</div>
+
+
+<!-- Photo Grid -->
+<div class="row bgcolor="#38F094"> 
+  <div class="column">
+    <img src="data:image/jpeg;base64,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" style="width:100%">
+    <a href="oyo.html">
+    <img src="https://d18lkz4dllo6v2.cloudfront.net/cumulus_uploads/entry/2019-04-23/oyo.jpg?w=660" style="width:100%"> </a>
+    <img src="/w3images/nature.jpg" style="width:100%">
+
+
+  </div>
+  <div class="column">
+    <img src="https://www.india.com/wp-content/uploads/2018/10/flipkart.jpg" style="width:100%">
+    <img src="https://i.pinimg.com/originals/5f/7c/b4/5f7cb441bb8a101d8ae7742333513349.jpg" style="width:100%">
+
+    <img src="https://cloud.netlifyusercontent.com/assets/344dbf88-fdf9-42bb-adb4-46f01eedd629/b70cc2de-2832-4e0e-95b0-67d057f2c333/mcdonalds.jpg" style="width:100%">
+
+  </div>  
+  <div class="column">
+    <img src="https://cdn.pocket-lint.com/r/s/1200x/assets/images/149351-phones-feature-best-iphone-11-11-pro-and-11-pro-max-cases-protect-your-new-apple-device-image1-we8ekl1mj7.jpg" style="width:100%">
+    <img src="https://99designs-blog.imgix.net/blog/wp-content/uploads/2016/10/Pentagram-1.jpg?auto=format&q=60&fit=max&w=930  style="width:100%">
+  </div>
+  <div class="column">
+       <img src=" https://teja10.kuikr.com/public/images/dist/JPEG/Quikr-Logo.jpg" style="width:100%">
+       <img src="https://www.logotaglines.com/wp-content/uploads/2016/08/shopclues-logo-370x297.jpg" style="width:100%">
+       <img src="    https://images.yourstory.com/cs/wordpress/2016/09/snapdeal-new-logo.png?fm=png&auto=format    " style="width:100%">
+
+  </div>
+</div>
+
+</body>
+</html>
