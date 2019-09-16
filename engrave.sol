@@ -24,7 +24,7 @@ contract Bank
         {   
             if (hotels[i].oyoid == id)
             {
-                return hotels[hotelscount].review ;
+                return hotels[i].review ;
             }
         }    
     }
