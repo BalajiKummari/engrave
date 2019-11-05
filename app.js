@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import SimpleStorageContract from "./contracts/SimpleStorage.json";
-//import Notehash from "./contracts/Notehash.json";
+import Notehash from "./contracts/Notehash.json";
 import getWeb3 from "./utils/getWeb3";
 import { Buffer } from 'buffer';
 import "./App.css";
@@ -8,42 +8,12 @@ import "./App.css";
 const ipfsClient = require('ipfs-http-client');
 
 const ipfs = ipfsClient({
-  
-  host: 'ipfs.infura.io',
-  port: 5001,
-  protocol: 'https'
+  host: 'localhost', port: '5001', protocol: 'http'
 })
 
 class App extends Component {
-  state = { buffer : null, storageValue: 0, web3: null, accounts: null, contract: null };
+  state = { noteId:null, noofnotes : null, web3: null, accounts: null, contract: null, buffer : null, resultHash : null };
 
-  onChange = (event) => {
-    event.preventDefault()
-    console.log("file caputred")
-    const file = event.target.files[0]
-    const reader = new window.FileReader()
-    reader.readAsArrayBuffer(file)
-    reader.onloadend = () => {
-      this.setState({bufffer : Buffer(reader.result)})
-    }
-  }
-
-  onSubmit =  (event) =>{
-    event.preventDefault()
-    console.log('Submitting file')
-    //console.log('buffer', Buffer(this.state.buffer))
-    ipfs.add(this.state.buffer, (error, result)=> {
-    console.log("ipfs Results", result)
-
-      if(error){
-        console.error(error)
-        return
-      }
-
-
-    })
-  
-  }
 
   componentDidMount = async () => {
     try {
@@ -56,12 +26,12 @@ class App extends Component {
       // Get the contract instance.
       const networkId = await web3.eth.net.getId();
 
-      const deployedNetwork = SimpleStorageContract.networks[networkId];
+      const deployedNetwork = Notehash.networks[networkId];
 
 
       const instance = new web3.eth.Contract(
-      SimpleStorageContract.abi,
-        deployedNetwork && deployedNetwork.address,
+      Notehash.abi,
+      deployedNetwork && deployedNetwork.address,
       );
 
 
@@ -78,18 +48,55 @@ class App extends Component {
     }
   };
 
-  runExample = async () => {
+
+  onChange = (event) => {
+    event.preventDefault()
+    console.log("file caputred")
+    const file = event.target.files[0]
+    const reader = new window.FileReader()
+    reader.readAsArrayBuffer(file)
+    reader.onloadend = () => {
+      this.setState({ buffer : Buffer(reader.result)}
+      
+      )
+    }
+  }
+
+  onSubmit =  (event) =>{
+    event.preventDefault()
+    console.log('Submitting file')
+    console.log('buffer', Buffer(this.state.buffer))
+    ipfs.add(this.state.buffer, (error, result)=> {
+    console.log("ipfs Results", result)
+    this.setState(  { resultHash : result[0].hash })
+      if(error){
+        console.error(error)
+        return
+      }
+    })
+  } 
+
+  addtochain = async () => {
     const { accounts, contract } = this.state;
 
     // Stores a given value, 5 by default.
-     //await contract.methods.set(5).send({ from: accounts[0] });
+    const response = await contract.methods.addhash(this.state.resultHash).send({ from: accounts[0] });
 
     // Get the value from the contract to prove it worked.
-    const response = await contract.methods.get().call();
+    //const response = await contract.noteId;
 
     // Update state with the result.
-    this.setState({ storageValue: response });
+    this.setState({ noteId: response.from });
   };
+
+
+  getinfo = async (event) => {
+    
+    const text = event.target.value
+    console.log('id',text)
+
+  };
+
 
   render() {
     if (!this.state.web3) {
@@ -98,7 +105,6 @@ class App extends Component {
     return (
       <div className="App">
         <h1> upload your Promissory Note </h1>
-        <div>The stored value is: {this.state.storageValue}</div>
 
         <div>
               <form onSubmit = {this.onSubmit}> 
@@ -107,6 +113,23 @@ class App extends Component {
               <input type = 'submit' />
 
               </form>
+              
+              <h3> your Promissory Note is Store at IPFS Loaction</h3>
+              <div> : {this.state.resultHash}  </div>
+              <div>
+              <button onClick = {this.addtochain}>Add the Note to block chain </button>
+              <h3> your Promissory Note is Store at Blockchain Loaction</h3>
+              <div> : {this.state.noteId}  </div>
+              </div>
+        </div>
+        <div>
+        <form name = 'form2' onSubmit = {this.onSubmit}> 
+             
+             <input type = 'text'  />
+             <input type = 'submit' onSubmit = {this.getinfo} />
+             </form>
+             <h3> details of Note ID</h3>
+
 
         </div>
       </div>
